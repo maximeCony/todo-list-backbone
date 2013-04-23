@@ -37,7 +37,7 @@ $(function(){
     // This view turns a Task model into HTML. Will create LI elements.
     var TaskView = Backbone.View.extend({
         tagName: 'div',
-        className: 'alert alert-info',
+        className: 'alert',
 
         events:{
             'click': 'toggleTask'
@@ -48,14 +48,19 @@ $(function(){
             // Set up event listeners. The change backbone event
             // is raised when a property changes (like the checked field)
 
-            //this.listenTo(this.model, 'change', this.render);
+            this.listenTo(this.model, 'change', this.render);
         },
 
         render: function(){
 
-            // Create the HTML
+            var classNames = ['alert-success', 'alert-info'];
 
-            this.$el.html('<input type="checkbox" value="1" name="' + this.model.get('title') + '" /> ' + this.model.get('title'));
+            if(this.model.get('checked')) {
+                classNames.reverse();
+            }
+
+            // Create the HTML
+            this.$el.removeClass(classNames[0]).addClass(classNames[1]).html('<input type="checkbox" value="1" name="' + this.model.get('title') + '" /> ' + this.model.get('title'));
             this.$('input').prop('checked', this.model.get('checked'));
 
             // Returning the object is a good practice
@@ -63,10 +68,9 @@ $(function(){
             return this;
         },
 
-        toggleTask: function(task){
+        toggleTask: function(){
+            
             this.model.toggle();
-            console.log(this);
-            console.log(task);
         }
     });
 

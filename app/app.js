@@ -40,7 +40,8 @@ $(function(){
         className: 'alert',
 
         events:{
-            'click': 'toggleTask'
+            'click': 'toggleTask',
+            'click .removeTask': 'removeTask',
         },
 
         initialize: function(){
@@ -49,6 +50,7 @@ $(function(){
             // is raised when a property changes (like the checked field)
 
             this.listenTo(this.model, 'change', this.render);
+            this.listenTo(this.model, 'destroy', this.remove);
         },
 
         render: function(){
@@ -60,7 +62,11 @@ $(function(){
             }
 
             // Create the HTML
-            this.$el.removeClass(classNames[0]).addClass(classNames[1]).html('<input type="checkbox" value="1" name="' + this.model.get('title') + '" /> ' + this.model.get('title'));
+            this.$el.removeClass(classNames[0])
+            .addClass(classNames[1])
+            .html('<input type="checkbox" value="1" name="' + this.model.get('title') 
+                + '" /> <span>' + this.model.get('title') + '</span> <i class="icon-remove removeTask"></i>');
+
             this.$('input').prop('checked', this.model.get('checked'));
 
             // Returning the object is a good practice
@@ -71,6 +77,12 @@ $(function(){
         toggleTask: function(){
             
             this.model.toggle();
+        },
+
+        removeTask: function(e){
+
+            e.stopPropagation();
+            this.model.destroy();
         }
     });
 

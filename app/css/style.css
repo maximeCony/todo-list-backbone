@@ -6,10 +6,19 @@ body{
 #tasks .alert {
     margin: auto auto 1em;
     max-width: 24em;
+    padding-right: 0.7em;
     text-align: left;
 }
 
+#tasks .alert-success span {
+	text-decoration: line-through;
+}
 
 #tasks input {
     vertical-align: top;
+}
+
+.removeTask {
+	float: right;
+	cursor: pointer;
 }

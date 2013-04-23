@@ -2,3 +2,14 @@ body{
 	text-align: center;;
 	padding: 1em;
 }
+
+#tasks .alert {
+    margin: auto auto 1em;
+    max-width: 24em;
+    text-align: left;
+}
+
+
+#tasks input {
+    vertical-align: top;
+}

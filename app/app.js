@@ -23,6 +23,7 @@ $(function(){
         // Will hold objects of the Task model
         model: Task,
 
+        // Set up the local storage
         localStorage: new Backbone.LocalStorage("todolistApp"),
 
         // Return an array only with the checked tasks
@@ -38,36 +39,41 @@ $(function(){
     var TaskView = Backbone.View.extend({
         tagName: 'div',
         className: 'alert',
+        
+        template: _.template($('#taskTemplate').html()),
 
         events:{
-            'click': 'toggleTask',
+            'click .taskCheckbox': 'toggleTask',
             'click .removeTask': 'removeTask',
+            "keypress .taskEdit"  : "updateOnEnter"
         },
 
         initialize: function(){
 
             // Set up event listeners. The change backbone event
             // is raised when a property changes (like the checked field)
-
             this.listenTo(this.model, 'change', this.render);
             this.listenTo(this.model, 'destroy', this.remove);
         },
 
         render: function(){
 
+            //bootestrap alert class (green, blue)
             var classNames = ['alert-success', 'alert-info'];
 
             if(this.model.get('checked')) {
+                //reverse the order of the array
                 classNames.reverse();
             }
 
             // Create the HTML
             this.$el.removeClass(classNames[0])
             .addClass(classNames[1])
-            .html('<input type="checkbox" value="1" name="' + this.model.get('title') 
-                + '" /> <span>' + this.model.get('title') + '</span> <i class="icon-remove removeTask"></i>');
+            .html(this.template(this.model.toJSON()));
 
             this.$('input').prop('checked', this.model.get('checked'));
+
+            this.input = this.$('.taskEdit');
 
             // Returning the object is a good practice
             // that makes chaining possible
@@ -81,9 +87,28 @@ $(function(){
 
         removeTask: function(e){
 
-            e.stopPropagation();
             this.model.destroy();
+        },
+
+        updateOnEnter: function(e) {
+
+            
+
+            console.log(this);
+
+
+            // Check the enter keycode
+            if (e.keyCode != 13) return;
+
+            var title = this.input.val();
+            // Prevent empty validation
+            if (!title) return;
+
+            // Create a new task
+            this.model.save({title: title});
+
         }
+
     });
 
     // The main view of the application
@@ -124,11 +149,14 @@ $(function(){
 
         createOnEnter: function(e) {
 
-              if (e.keyCode != 13) return;
-              if (!this.input.val()) return;
+            // Check the enter keycode
+            if (e.keyCode != 13) return;
+            // Prevent empty validation
+            if (!this.input.val()) return;
 
-              tasks.create({title: this.input.val()});
-              this.input.val('');
+            // Create a new task
+            tasks.create({title: this.input.val()});
+                this.input.val('');
             },
         });
 

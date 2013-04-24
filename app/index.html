@@ -18,11 +18,10 @@
         <section id="app">
             <header>
                 <h1>TO DO!</h1>
+                <input id="newTask" type="text" placeholder="Your new task">
                 <section id="tasks">
                     <!-- Populated tasks -->
                 </section>
-                <br/>
-                <input id="newTask" type="text" placeholder="Your task">
             </header>
         </section>
 
@@ -34,12 +33,13 @@
 
         <script src="app.js"></script>
 
-        <script type="text/javascript">
-
-        $(document).ready(function() {
-
-            //Start
-        });
+        <script type="text/template" id="taskTemplate">
+            <div class="view">
+                <input class="taskCheckbox" type="checkbox" <%= checked ? 'checked="checked"' : '' %> />
+                <span><%- title %></span>
+                <i class="icon-remove removeTask"></i>
+            </div>
+            <input class="taskEdit" type="text" value="<%- title %>" />
         </script>
 
 

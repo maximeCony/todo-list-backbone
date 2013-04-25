@@ -45,7 +45,8 @@ $(function(){
         events:{
             'click .taskCheckbox': 'toggleTask',
             'click .removeTask': 'removeTask',
-            "keypress .taskEdit"  : "updateOnEnter"
+            "keypress .taskEdit"  : "taskInputKeypress",
+            "dblclick"  : "editMode"
         },
 
         initialize: function(){
@@ -73,6 +74,7 @@ $(function(){
 
             this.$('input').prop('checked', this.model.get('checked'));
 
+            // Keep the edit input in the task object
             this.input = this.$('.taskEdit');
 
             // Returning the object is a good practice
@@ -80,32 +82,45 @@ $(function(){
             return this;
         },
 
+        editMode: function(){
+            
+            this.$el.addClass('edit');
+        },
+
         toggleTask: function(){
             
             this.model.toggle();
         },
 
-        removeTask: function(e){
+        removeTask: function(){
 
             this.model.destroy();
         },
 
-        updateOnEnter: function(e) {
+        closeEditMode: function(){
 
-            
+            this.$el.removeClass('edit');
+        },
 
-            console.log(this);
+        taskInputKeypress: function(e) {
 
+            // on press Enter
+            if (e.keyCode == 13) {
+                
+                var title = this.input.val();
+                // Prevent empty validation
+                if (!title) return;
 
-            // Check the enter keycode
-            if (e.keyCode != 13) return;
+                // Create a new task
+                this.model.save({title: title});
+                this.closeEditMode();
+            }
 
-            var title = this.input.val();
-            // Prevent empty validation
-            if (!title) return;
-
-            // Create a new task
-            this.model.save({title: title});
+            // on press Escape
+            if (e.keyCode == 27) {
+                
+                this.closeEditMode();
+            }            
 
         }
 

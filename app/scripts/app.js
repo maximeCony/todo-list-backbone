@@ -32,7 +32,6 @@ $(function(){
         }
     });
 
-    // Prefill the collection with a number of tasks.
     var tasks = new TaskList();
 
     // This view turns a Task model into HTML. Will create LI elements.
@@ -142,17 +141,6 @@ $(function(){
             this.input = $('#newTask');
 
             this.listenTo(tasks, 'add', this.addOne);
-      
-
-            // Create views for every one of the tasks in the
-            // collection and add them to the page
-
-            tasks.each(function(task){
-
-                var view = new TaskView({ model: task });
-                this.taskList.append(view.render().el);
-
-            }, this);   // "this" is the context in the callback
 
             tasks.fetch();
         },

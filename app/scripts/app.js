@@ -147,7 +147,7 @@ $(function(){
 
         addOne: function(task) {
             var view = new TaskView({model: task});
-            this.taskList.append(view.render().el);
+            this.taskList.prepend(view.render().el);
         },
 
         createOnEnter: function(e) {

@@ -33,8 +33,6 @@ $(function(){
         }
     });
 
-    var tasks = new TaskList();
-
     // This view turns a Task model into HTML. Will create LI elements.
     var TaskView = Backbone.View.extend({
         tagName: 'div',
@@ -129,6 +127,33 @@ $(function(){
 
     });
 
+
+    var TaskListView = Backbone.View.extend({
+
+        tagName: 'div',
+
+        el: $('#tasks'),
+
+        initialize: function(){
+            //listen the add event
+            this.collection.on('add', this.addOne, this);
+        },
+
+        addOne: function(model){
+
+            //create a new collection view
+            var taskView = new TaskView({model: model});
+            //render the collection
+            this.$el.prepend(taskView.render().el);
+        },
+
+        render: function(){
+            //render all collection's elements
+            this.collection.forEach(this.addOne, this);
+            return this;
+        }
+    });
+
     // The main view of the application
     var App = Backbone.View.extend({
 
@@ -141,26 +166,25 @@ $(function(){
 
         initialize: function(){
 
-            this.taskList = $('#tasks');
-            this.input = $('#newTask');
-
-            this.listenTo(tasks, 'add', this.addOne);
-
-            tasks.fetch();
+            this.tasks = new TaskList();
+            var taskListView = new TaskListView({collection: this.tasks});
+            this.tasks.fetch();
         },
 
         createOnEnter: function(e) {
 
             e.preventDefault();
 
-            if (!this.input.val()) return;
+            var titleInput = $('#newTask');
+
+            if (!titleInput.val()) return;
 
             // Create a new task
-            tasks.create({
-                title: this.input.val(),
+            this.tasks.create({
+                title: titleInput.val(),
                 importance: $('#taskForm input[name=importance]:checked').val()
             });
-            this.input.val('');
+            titleInput.val('');
         },
     });
 

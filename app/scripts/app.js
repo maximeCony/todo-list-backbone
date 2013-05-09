@@ -8,7 +8,8 @@ $(function(){
 
         defaults:{
             title: 'New task',
-            checked: false
+            checked: false,
+            importance: 0
         },
 
         // Helper function for checking/unchecking a task
@@ -58,18 +59,18 @@ $(function(){
 
         render: function(){
 
-            //bootestrap alert class (green, blue)
-            var classNames = ['alert-success', 'alert-info'];
+            var className = '';
 
-            if(this.model.get('checked')) {
-                //reverse the order of the array
-                classNames.reverse();
+            if(this.model.get('checked')){
+                className = 'alert alert-success';
+            } else {
+
+                var classNames = ["alert alert-info", "alert alert-warning", "alert alert-error"];
+                className = classNames[this.model.get('importance')];
             }
 
             // Create the HTML
-            this.$el.removeClass(classNames[0])
-            .addClass(classNames[1])
-            .html(this.template(this.model.toJSON()));
+            this.$el.attr('class', className).html(this.template(this.model.toJSON()));
 
             this.$('input').prop('checked', this.model.get('checked'));
 
@@ -83,7 +84,7 @@ $(function(){
 
         editMode: function(){
             
-            this.$el.addClass('edit');
+            this.$el.addClass('editMode');
         },
 
         toggleTask: function(){
@@ -98,7 +99,7 @@ $(function(){
 
         closeEditMode: function(){
 
-            this.$el.removeClass('edit');
+            this.$el.removeClass('editMode');
         },
 
         taskInputKeypress: function(e) {
@@ -110,8 +111,11 @@ $(function(){
                 // Prevent empty validation
                 if (!title) return;
 
-                // Create a new task
-                this.model.save({title: title});
+                // Edit the task
+                tasks.create({
+                    title: this.input.val(),
+                    importance: $('input[name=importance]:checked').val()
+                }); 
                 this.closeEditMode();
             }
 
@@ -132,7 +136,7 @@ $(function(){
         el: $('#app'),
 
         events: {
-          "keypress #newTask":  "createOnEnter"
+          "submit #taskForm":  "createOnEnter"
         },
 
         initialize: function(){
@@ -145,23 +149,20 @@ $(function(){
             tasks.fetch();
         },
 
-        addOne: function(task) {
-            var view = new TaskView({model: task});
-            this.taskList.prepend(view.render().el);
-        },
-
         createOnEnter: function(e) {
 
-            // Check the enter keycode
-            if (e.keyCode != 13) return;
-            // Prevent empty validation
+            e.preventDefault();
+
             if (!this.input.val()) return;
 
             // Create a new task
-            tasks.create({title: this.input.val()});
-                this.input.val('');
-            },
-        });
+            tasks.create({
+                title: this.input.val(),
+                importance: $('#taskForm input[name=importance]:checked').val()
+            });
+            this.input.val('');
+        },
+    });
 
     new App();
 

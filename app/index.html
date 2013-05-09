@@ -18,7 +18,23 @@
         <section id="app">
             <header>
                 <h1>TO DO!</h1>
-                <input id="newTask" type="text" placeholder="Your new task">
+                <form id="taskForm" action="#">
+                    <div class="input-append">
+                        <input id="newTask" type="text" placeholder="Your new task">
+                        <button type="submit" class="btn">OK</button>
+                    </div>
+                    <br>
+                    <label class="checkbox inline lowImp">
+                        <input type="radio" name="importance" value="0"> normal
+                    </label>
+                    <label class="checkbox inline midImp">
+                        <input type="radio" name="importance" value="1"> important
+                    </label>
+                    <label class="checkbox inline highImp">
+                        <input type="radio" name="importance" value="2"> critical
+                    </label>
+                </form>
+                <hr>
                 <section id="tasks">
                     <!-- Populated tasks -->
                 </section>
@@ -39,7 +55,20 @@
                 <span><%- title %></span>
                 <i class="icon-remove removeTask"></i>
             </div>
-            <input class="taskEdit" type="text" value="<%- title %>" />
+            <div class="edit">
+                <br>
+                <input class="taskEdit" type="text" value="<%- title %>" />
+                <input class="newTask" type="text" placeholder="Your new task">
+                <label class="checkbox inline lowImp">
+                    <input type="radio" name="importance" value="0"> normal
+                </label>
+                <label class="checkbox inline midImp">
+                    <input type="radio" name="importance" value="1"> important
+                </label>
+                <label class="checkbox inline highImp">
+                    <input type="radio" name="importance" value="2"> critical
+                </label>
+            </div>
         </script>
 
 

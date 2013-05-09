@@ -1,6 +1,7 @@
 body{
 	text-align: center;;
 	padding: 1em;
+	/*background-image: url('/images/dot.png');*/
 }
 
 #tasks .alert {
@@ -27,12 +28,13 @@ body{
 	display: none;
 }
 
-#tasks div.edit div.view{
+#tasks div.alert div.edit, #tasks div.editMode div.view {
 	display: none !important;
 }
 
-#tasks div.alert div.view, #tasks div.edit input.taskEdit{
-	display: inline;
+
+#tasks div.alert div.view, #tasks div.editMode div.edit {
+	display: inline !important;
 }
 
 

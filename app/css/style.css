@@ -1,7 +1,7 @@
 body{
 	text-align: center;;
 	padding: 1em;
-	/*background-image: url('/images/dot.png');*/
+	background-image: url('/images/dot.png');
 }
 
 #tasks .alert {
@@ -9,6 +9,8 @@ body{
     max-width: 24em;
     padding-right: 0.7em;
     text-align: left;
+    border-radius: 0;
+    border: 1px solid #AAAAAA;
 }
 
 #tasks .alert-success span {
@@ -19,23 +21,42 @@ body{
     vertical-align: top;
 }
 
+#taskForm label.checkbox input{
+    vertical-align: top;
+}
+
 .removeTask {
 	float: right;
 	cursor: pointer;
 }
 
-#tasks div.alert input.taskEdit{
+#tasks div.alert form.editTaskForm {
 	display: none;
 }
 
-#tasks div.alert div.edit, #tasks div.editMode div.view {
+#tasks div.editMode div.view {
 	display: none !important;
 }
 
-
-#tasks div.alert div.view, #tasks div.editMode div.edit {
-	display: inline !important;
+#tasks div.alert div.view, #tasks div.editMode form.editTaskForm {
+	display: inline;
 }
 
+.taskTitleEditInput {
+    width: 81%;
+}
+
+.nameField {
+    width: 86%;
+}
+
+#newTask {
+	border-radius: 0;
+	border: 1px solid #777777;
+}
+
+#taskForm div.input-append button.btn {
+	border-radius: 0;
+}
 
 

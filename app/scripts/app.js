@@ -1,5 +1,6 @@
 $(function(){
 
+    // Will contain our app componments
     var App = {
         Models: {},
         Views: {},
@@ -60,16 +61,19 @@ $(function(){
         render: function(){
 
             var className = '';
-
+            
             if(this.model.get('checked')){
+                // if the task is done 
                 className = 'alert alert-success';
             } else {
                 var classNames = ["alert alert-info", "alert alert-warning", "alert alert-error"];
+                // choose the alert class based on importance field
                 className = classNames[this.model.get('importance')];
             }
             // Create the HTML
             this.$el.attr('class', className)
             .html(this.template(this.model.toJSON()))
+            //check the radio field
             .find('input:radio[name=importance]:eq(' + this.model.get('importance') + ')')
             .prop('checked', true);
 
@@ -77,12 +81,17 @@ $(function(){
         },
 
         editMode: function(){
-            
+            // show edit form
             this.$el.addClass('editMode');
         },
 
+        closeEditMode: function(){
+            // hide edit form
+            this.$el.removeClass('editMode');
+        },
+
         toggleTask: function(){
-            
+            // check/uncheck task
             this.model.toggle();
         },
 
@@ -91,15 +100,11 @@ $(function(){
             this.model.destroy();
         },
 
-        closeEditMode: function(){
-
-            this.$el.removeClass('editMode');
-        },
-
         editTask: function(e) {
 
+            // prevent from default submit
             e.preventDefault();
-
+            // get title value
             var title = this.$('.taskTitleEditInput').val();
             // Prevent empty validation
             if (!title) return;
@@ -107,7 +112,7 @@ $(function(){
             this.model.save({
                 title: title,
                 importance: this.$el.find('input[name=importance]:checked').val()
-            }); 
+            });
             this.closeEditMode();           
         }
     });
@@ -116,8 +121,6 @@ $(function(){
     * Tasks View
     */
     App.Views.Tasks = Backbone.View.extend({
-
-        tagName: 'div',
 
         el: $('#tasks'),
 
@@ -143,7 +146,8 @@ $(function(){
 
     /* 
     * Tasks View
-    */ App.Views.App = Backbone.View.extend({
+    */
+    App.Views.App = Backbone.View.extend({
 
         // Base the view on an existing element
         el: $('#app'),
@@ -153,29 +157,35 @@ $(function(){
         },
 
         initialize: function(){
-
+            // initialize task list
             this.tasks = new App.Collections.Tasks();
+        },
+
+        start: function(){
+            // setup the tasks view
             var taskListView = new App.Views.Tasks({collection: this.tasks});
+            // get data from local storage
             this.tasks.fetch();
         },
 
         createOnEnter: function(e) {
-
+            // prevent from default submit
             e.preventDefault();
-
+            // get task's title
             var titleInput = $('#newTask');
-
+            // prevent empty submit
             if (!titleInput.val()) return;
-
             // Create a new task
             this.tasks.create({
                 title: titleInput.val(),
                 importance: $('#taskForm input[name=importance]:checked').val()
             });
+            // empty the title field
             titleInput.val('');
         },
     });
 
     var app = new App.Views.App();
-
+    // start the app
+    app.start();
 });

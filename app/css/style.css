@@ -59,4 +59,6 @@ body{
 	border-radius: 0;
 }
 
-
+.btn, button, input{
+	border-radius: 0 !important;
+}

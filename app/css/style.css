@@ -4,6 +4,10 @@ body{
 	background-image: url('/images/dot.png');
 }
 
+#taskForm div.input-append {
+	box-shadow: 1px 1px 2px 0 rgba(0, 0, 0, 0.1);
+}
+
 #tasks .alert {
     margin: auto auto 1em;
     max-width: 24em;
@@ -11,6 +15,7 @@ body{
     text-align: left;
     border-radius: 0;
     border: 1px solid #AAAAAA;
+    box-shadow: 1px 1px 2px 0 rgba(0, 0, 0, 0.1);
 }
 
 #tasks .alert-success span {
@@ -59,6 +64,6 @@ body{
 	border-radius: 0;
 }
 
-.btn, button, input{
+.btn, button, input {
 	border-radius: 0 !important;
 }

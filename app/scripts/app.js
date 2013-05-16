@@ -85,9 +85,18 @@ $(function(){
             this.$el.addClass('editMode');
         },
 
-        closeEditMode: function(){
+        closeEditMode: function(e){
+            // prevent from submit
+            if(typeof e != 'undefined') {
+                e.preventDefault();
+            }
             // hide edit form
             this.$el.removeClass('editMode');
+            //reset title value
+            this.$('.taskTitleEditInput').val(this.model.get('title'));
+            //reset importance radio value
+            this.$('input:radio[name=importance]:eq(' + this.model.get('importance') + ')')
+            .prop('checked', true);
         },
 
         toggleTask: function(){
@@ -101,7 +110,6 @@ $(function(){
         },
 
         editTask: function(e) {
-
             // prevent from default submit
             e.preventDefault();
             // get title value
